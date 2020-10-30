@@ -14,7 +14,7 @@ const register = async(req,res)=>{
 
     //Hash password
     const salt = await bcrypt.genSalt(10)
-    const hashedpassword = await bcrypt.hash(req.body.password,salt);
+    const hashedpassword = await bcrypt.hash(req.body.password,salt)
 
     //prepare for insert into database
     const user = new User({
@@ -25,7 +25,8 @@ const register = async(req,res)=>{
     //try to insert it
     try {
         const insertuser = await user.save()
-        if(insertuser) return res.status(201).send({user_id:user._id,message:'register success'})
+        const token = jwt.sign({_id: insertuser._id,name:insertuser.name}, process.env.JWT_SECRET,{ expiresIn: '1h' })
+        if(insertuser) return res.status(201).send({token:token,message:'register success'})
     } catch (error) {
         if(error.code == 11000){
         res.status(400).send('email already registered')
