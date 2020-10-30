@@ -1,5 +1,5 @@
 const User = require('../model/user')
-const {registerValidation, loginValidation} = require('../validation/validation')
+const {registerValidation, loginValidation} = require('../validation/authValidation')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
@@ -51,7 +51,7 @@ const login = async(req,res)=>{
 
     //create and assign jwt
     const token = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_SECRET,{ expiresIn: '1h' })
-    res.header('token',token).send(token)
+    res.header('token',token).send({token:token})
 }
 
 module.exports.login = login
