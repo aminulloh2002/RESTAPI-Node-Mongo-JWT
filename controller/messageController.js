@@ -31,7 +31,7 @@ module.exports.getMessage = getMessage
 
 const deleteMessage = async (req,res)=>{
 
-    // try {
+    
         Message.findByIdAndDelete(req.params.id).then(response=>{ 
             if (response != null) {     
                 res.send('delete success!')
@@ -41,9 +41,7 @@ const deleteMessage = async (req,res)=>{
         }).catch(err=>{
             res.send({err})
         })
-    // } catch (error) {
-    //     res.status(400).send(error)
-    // }
+  
 }
 
 module.exports.deleteMessage = deleteMessage
