@@ -1,5 +1,14 @@
 const jwt = require('jsonwebtoken')
 
+const generateToken = function (user) {
+        //create and assign jwt
+        const accessToken = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_SECRET,{ expiresIn: '15m' })
+        const refreshToken = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_REFRESH_SECRET,{ expiresIn: '14d' })
+        return ([{'access-token':accessToken,validity:'15 minutes'},{'refresh-token':refreshToken,validity:'14 days'}])
+}
+
+module.exports.generateToken = generateToken
+
 const verify = function (req,res,next) {
     const token = req.header('access-token')
     if(!token) return res.status(401).send('access denied')
