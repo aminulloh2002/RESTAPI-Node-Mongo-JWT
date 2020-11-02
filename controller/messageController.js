@@ -20,8 +20,8 @@ module.exports.insert = insert
 const getMessage = async (req,res)=>{
 
     try {
-        const doc = await Message.find({},{__v:0})
-        res.status(200).send(doc)
+        const data = await Message.find({_idSender:req.user._id},{__v:0})
+        res.status(200).send(data)
     } catch (error) {
         res.status(400).send(error)
     }
@@ -31,7 +31,6 @@ module.exports.getMessage = getMessage
 
 const deleteMessage = async (req,res)=>{
 
-    
         Message.findByIdAndDelete(req.params.id).then(response=>{ 
             if (response != null) {     
                 res.send('delete success!')

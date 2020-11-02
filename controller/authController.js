@@ -25,8 +25,9 @@ const register = async(req,res)=>{
     //try to insert it
     try {
         const insertuser = await user.save()
-        const token = jwt.sign({_id: insertuser._id,name:insertuser.name}, process.env.JWT_SECRET,{ expiresIn: '1h' })
-        if(insertuser) return res.status(201).send({token:token,message:'register success'})
+        const accessToken = jwt.sign({_id: insertuser._id,name:insertuser.name}, process.env.JWT_SECRET,{ expiresIn: '15m' })
+        const refreshToken = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_REFRESH_SECRET,{ expiresIn: '14d' })
+        if(insertuser) return res.status(201).send({accessToken,refreshToken,message:'register success'})
     } catch (error) {
         if(error.code == 11000){
         res.status(400).send('email already registered')
@@ -50,8 +51,10 @@ const login = async(req,res)=>{
     if(!validPass) return res.status(400).send('Invalid email or password')
 
     //create and assign jwt
-    const token = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_SECRET,{ expiresIn: '1h' })
-    res.header('token',token).send({token:token})
+    const accessToken = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_SECRET,{ expiresIn: '15m' })
+    const refreshToken = jwt.sign({_id: user._id,name:user.name}, process.env.JWT_REFRESH_SECRET,{ expiresIn: '14d' })
+    //res.header('token',accessToken).send({token:accessToken})
+    res.status(200).send({accessToken,refreshToken})
 }
 
 module.exports.login = login

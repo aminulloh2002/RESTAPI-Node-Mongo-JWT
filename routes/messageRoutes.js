@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const verify = require('../controller/verifyToken')
+const {verify} = require('../controller/tokenController')
 const {insert,getMessage,deleteMessage} = require('../controller/messageController')
 
 //insert
