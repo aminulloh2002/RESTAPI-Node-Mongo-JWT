@@ -4,6 +4,7 @@ dotenv.config()
 
 //mongoose opt
 mongoose.set('useUnifiedTopology', true)
+mongoose.set('useFindAndModify', true)
 // mongoose.set('useCreateIndex', true)
 //connect to db
 module.exports = mongoose.connect(process.env.DB_CONNECT,

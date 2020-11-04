@@ -1,14 +1,18 @@
 const router = require('express').Router()
 const {verify} = require('../controller/tokenController')
-const {insert,getMessage,deleteMessage} = require('../controller/messageController')
+const {insertMessage,getMessage,deleteMessage,updateMessage} = require('../controller/messageController')
 
-//insert
+//insertMessage
 router.post('/send',verify,(req,res)=>{
-    insert(req,res)
+    insertMessage(req,res)
 })
 
 router.get('/',verify,(req,res)=>{
     getMessage(req,res)
+})
+
+router.put('/update/:id',verify,(req,res)=>{
+    updateMessage(req,res)
 })
 
 router.delete('/delete/:id',verify,(req,res)=>{

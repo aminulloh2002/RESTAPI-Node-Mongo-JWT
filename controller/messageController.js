@@ -1,6 +1,6 @@
 const Message = require('../model/message')
 
-const insert = async (req,res)=>{
+const insertMessage = async (req,res)=>{
     const message = new Message({
       _idSender   : req.user._id,
       phoneNumber : req.body.phoneNumber,
@@ -15,7 +15,25 @@ const insert = async (req,res)=>{
     }
 }
 
-module.exports.insert = insert
+module.exports.insertMessage = insertMessage
+
+const updateMessage = async (req,res)=>{
+    Message.findByIdAndUpdate( req.params.id, { $set:
+        {
+            phoneNumber : req.body.phoneNumber,
+            message     : req.body.message   
+        }}).then(response=>{ 
+            if (response != null) {     
+                res.send('update success!')
+            }
+        }).catch(err=>{
+            if(err){
+                res.status(400).send('update fail')
+            }
+        })
+}
+
+module.exports.updateMessage = updateMessage
 
 const getMessage = async (req,res)=>{
 
